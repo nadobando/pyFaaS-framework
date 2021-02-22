@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Optional, Literal, Dict, List
 
 from pydantic import HttpUrl, Field
 
 from ...models import TitleCaseModel
+from ...typing import Optional, Literal, Dict, List, Union, DataT
 
 
 class SnsMsgAttributeModel(TitleCaseModel):
@@ -14,7 +14,7 @@ class SnsMsgAttributeModel(TitleCaseModel):
 class BaseSnsModel(TitleCaseModel):
     topic_arn: str
     type: Literal["Notification", "SubscriptionConfirmation"]
-    message: str
+    message: Union[str, DataT]
     message_id: str
     timestamp: datetime
 

@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Dict, List, Optional
 
 from pydantic import Field
 
 from ...models import TitleCaseModel, CamelCasedModel
-from ...typing import Literal
+from ...responses import DataT
+from ...typing import Literal, Dict, List, Optional, Union
 
 
 class SqsAttributesModel(TitleCaseModel):
@@ -29,7 +29,7 @@ class SqsMsgAttributeModel(CamelCasedModel):
 class SqsRecordModel(CamelCasedModel):
     message_id: str
     receipt_handle: str
-    body: str
+    body: Union[str, DataT]
     attributes: SqsAttributesModel
     message_attributes: Optional[Dict[str, SqsMsgAttributeModel]]
     md5_of_body: str
@@ -37,7 +37,6 @@ class SqsRecordModel(CamelCasedModel):
     event_source: Literal["aws:sqs"]
     event_source_arn: str = Field(alias="eventSourceARN")
     aws_region: str
-
 
 
 class SqsModel(TitleCaseModel):
