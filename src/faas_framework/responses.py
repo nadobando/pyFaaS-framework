@@ -6,9 +6,8 @@ from pydantic import BaseModel
 
 from . import typing
 from .models import Field, CamelCasedModel
+from .typing import DataT
 from .utils.collections import CaseInsensitiveDict
-
-DataT = typing.TypeVar('DataT')
 
 
 class Error(BaseModel):
