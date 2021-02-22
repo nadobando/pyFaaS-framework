@@ -10,7 +10,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from botocore.config import Config
 from pydantic import BaseModel
 
-from ..models.sns import BaseSnsNotificationModel, SqsSnsNotificationModel
+from ..models.sns import SqsSnsNotificationModel
 from ..models.sqs import SqsModel, SqsRecordModel
 from ...exceptions import BaseLambdaError
 from ...handlers import BaseFunctionHandler
@@ -146,7 +146,7 @@ class SqsEventHandler(BaseFunctionHandler, abc.ABC, metaclass=SqsHandlerMetaClas
         self.records: List[record_class.__class__]
 
         if self.sns_subscribed:
-            if self.records_class is not None and not issubclass(self.records_class, BaseSnsNotificationModel):
+            if self.records_class is not None and not issubclass(self.records_class, SqsSnsNotificationModel):
                 raise Exception(f"records_class must be subclass of {SqsSnsNotificationModel.__name__}")
             elif self.records_class is None:
                 self.records_class = SqsSnsNotificationModel

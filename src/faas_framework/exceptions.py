@@ -38,9 +38,6 @@ class SerializationError(BaseLambdaError):
     status_code = 500
     description = "Dont know how to serialize"
 
-    def __init__(self):
-        super(SerializationError, self).__init__()
-
 
 class BadRequestError(BaseLambdaError):
     status_code = 400
