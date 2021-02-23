@@ -7,7 +7,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from pydantic import BaseModel, create_model, ValidationError
 
 from faas_framework.aws.handlers.api_gw import AwsApiGwHttpResponse, LambdaApiGwProxyHandler
-from faas_framework.exceptions import BaseLambdaError
+from faas_framework.exceptions import BaseFunctionError
 from faas_framework.models.config import CamelCasedModel
 
 timestamp_pattern = re.compile(r".*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\+\d{4}).*")
@@ -84,7 +84,7 @@ class HttpDefaultResponseHandler(LambdaApiGwProxyHandler):
 
 class ErrorResponse(LambdaApiGwProxyHandler):
     def handle(self, *args, **kwargs) -> Union[AwsApiGwHttpResponse, Tuple[int, Any], Any]:
-        raise BaseLambdaError("this is the error message", status_code=409)
+        raise BaseFunctionError("this is the error message", status_code=409)
         # return Error(type="SomeErrorType", message="this is a the error type")
 
 

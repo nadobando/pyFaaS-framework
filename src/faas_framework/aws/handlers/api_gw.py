@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, ValidationError
 
-from ...exceptions import BaseLambdaError, SerializationError
+from ...exceptions import BaseFunctionError, SerializationError
 from ...handlers import BaseFunctionHandler
 from ...middlewares import BaseMiddleware
 from ...models import CamelCasedModel
@@ -152,13 +152,13 @@ class LambdaApiGwProxyHandler(BaseFunctionHandler, abc.ABC):
     def handle(self, *args, **kwargs) -> Union[AwsApiGwHttpResponse, Tuple[int, Any], Any]:
         pass
 
-    def handle_error(self, error: Union[Exception, BaseLambdaError, ValidationError]) -> AwsApiGwHttpResponse:
+    def handle_error(self, error: Union[Exception, BaseFunctionError, ValidationError]) -> AwsApiGwHttpResponse:
         response = AwsApiGwHttpResponse.construct()
         response.set_header("x-amzn-ErrorType", type(error).__name__)
         response.set_header("x-amzn-RequestId", self.context.aws_request_id)
         try:
             raise error
-        except BaseLambdaError:
+        except BaseFunctionError:
             response.body = Errors(errors=[Error(type=type(error).__name__, message=str(error))])
             response.status_code = error.status_code
             return response
