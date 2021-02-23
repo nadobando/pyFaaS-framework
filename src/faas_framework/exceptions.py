@@ -30,24 +30,38 @@ class BaseFunctionError(Exception, abc.ABC):
             return self.message
 
 
-class SerializationError(BaseFunctionError):
-    status_code = 500
-    message = "Dont know how to serialize"
-
-
 class BadRequestError(BaseFunctionError):
     status_code = 400
     message = "Bad Request"
 
 
-class InternalServerError(BaseFunctionError):
-    status_code = 500
-    message = "Internal Server Error"
+class UnauthorizedError(BaseFunctionError):
+    status_code = 401
+    message = "Unauthorized"
+
+
+class ForbiddenError(BaseFunctionError):
+    status_code = 403
+    message = "Unauthorized"
+
+
+class ResourceNotFoundError(BaseFunctionError):
+    status_code = 404
+    message = ""
+
+
+class MethodNotAllowedError(BaseFunctionError):
+    status_code = 405
+
+
+class RequestTimeoutError(BaseFunctionError):
+    status_code = 408
 
 
 class ConflictError(BaseFunctionError):
     status_code = 409
 
 
-class ResourceNotFoundError(BaseFunctionError):
-    status_code = 404
+class InternalServerError(BaseFunctionError):
+    status_code = 500
+    message = "Internal Server Error"
