@@ -4,49 +4,45 @@ import string
 
 class BaseFunctionError(Exception, abc.ABC):
     status_code: int
-    description: str = None
+    message: str = None
 
-    def __init__(self, message='', *, status_code=None, **params):
-        self.params = params
+    def __init__(self, message: str = None, *, status_code: int = None, **params):
         super(BaseFunctionError, self).__init__(message)
+        self.params = params
         self.status_code = status_code
-
-        if self.description and super(BaseFunctionError, self).__str__():
-            raise TypeError("Is not possible to set both message and description")
+        if message:
+            self.message = message
 
     def __str__(self):
-        try:
-            if self.description:
-                if string.Formatter().parse(self.description):
-                    return self.description % self.params
-                else:
-                    return self.description
-            elif string.Formatter().parse(super(BaseFunctionError, self).__str__()):
-                return self.description % self.params
-            else:
-                return super(BaseFunctionError, self).__str__()
-
-        except (IndexError, TypeError) as e:
-            msg = self.description or super(BaseFunctionError, self).__str__()
-            if self.params:
-                return f"{msg} {' '.join(str(i) for i in self.params)}"
-            else:
-                return msg
+        parsed = {tup[1] for tup in string.Formatter().parse(self.message) if tup[1] is not None}
+        has_params = len(parsed) > 0
+        _parsed = parsed.copy()
+        for param in parsed:
+            if param in self.params:
+                _parsed.remove(param)
+        len_parsed = len(_parsed)
+        if len_parsed != 0:
+            raise TypeError(
+                f"{self.__class__.__name__} missing {len_parsed} required keyword-only argument: {_parsed}")
+        if has_params:
+            return self.message.format(**self.params)
+        else:
+            return self.message
 
 
 class SerializationError(BaseFunctionError):
     status_code = 500
-    description = "Dont know how to serialize"
+    message = "Dont know how to serialize"
 
 
 class BadRequestError(BaseFunctionError):
     status_code = 400
-    description = "Bad Request"
+    message = "Bad Request"
 
 
 class InternalServerError(BaseFunctionError):
     status_code = 500
-    description = "Internal Server Error"
+    message = "Internal Server Error"
 
 
 class ConflictError(BaseFunctionError):
