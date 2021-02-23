@@ -250,29 +250,6 @@ def api_gw_event_dict_json_body():
     }
 
 
-# a = {'resource': '/echo/{param}', 'path': '/echo/kuku', 'httpMethod': 'GET', 'headers': None, 'multiValueHeaders': None,
-#      'queryStringParameters': None, 'multiValueQueryStringParameters': None, 'pathParameters': {'param': 'kuku'},
-#      'stageVariables': None,
-#      'requestContext': {'resourceId': 'nilkwi', 'resourcePath': '/echo/{param}', 'httpMethod': 'GET',
-#                         'extendedRequestId': 'bFjF4HXNDoEFoPg=', 'requestTime': '21/Feb/2021:08:23:39 +0000',
-#                         'path': '/echo/{param}', 'accountId': '086285707022', 'protocol': 'HTTP/1.1',
-#                         'stage': 'test-invoke-stage', 'domainPrefix': 'testPrefix', 'requestTimeEpoch': 1613895819952,
-#                         'requestId': '9e2f3f56-952c-42ba-98dc-cb0f063f9bb2',
-#                         'identity': {'cognitoIdentityPoolId': None, 'cognitoIdentityId': None,
-#                                      'apiKey': 'test-invoke-api-key', 'principalOrgId': None,
-#                                      'cognitoAuthenticationType': None,
-#                                      'userArn': 'arn:aws:sts::086285707022:assumed-role/AdminOKTARole/NAlbajari@cyberark.com',
-#                                      'apiKeyId': 'test-invoke-api-key-id',
-#                                      'userAgent': 'aws-internal/3 aws-sdk-java/1.11.946 Linux/4.9.230-0.1.ac.223.84.332.metal1.x86_64 OpenJDK_64-Bit_Server_VM/25.282-b08 java/1.8.0_282 vendor/Oracle_Corporation',
-#                                      'accountId': '086285707022',
-#                                      'caller': 'AROARIFYHM4HGGO5ODGSH:NAlbajari@cyberark.com',
-#                                      'sourceIp': 'test-invoke-source-ip', 'accessKey': 'ASIARIFYHM4HNTYDXPUM',
-#                                      'cognitoAuthenticationProvider': None,
-#                                      'user': 'AROARIFYHM4HGGO5ODGSH:NAlbajari@cyberark.com'},
-#                         'domainName': 'testPrefix.testDomainName', 'apiId': 'vghu2tcugg'}, 'body': None,
-#      'isBase64Encoded': False}
-
-
 @pytest.fixture
 def api_gw_event_dict_json_base64_body(api_gw_event_dict_json_body):
     api_gw_event_dict_json_body['body'] = 'eyJjdXN0b21lcklkIjogIjZlODM2MTJlLTRiNjgtNGEwYS1hYWRiLTUzYTViYmNlN2M3ZiJ9'
@@ -375,4 +352,24 @@ def sns_sqs_event_dict():
                 "awsRegion": "eu-west-1"
             }
         ]
+    }
+
+@pytest.fixture
+def event_bridge_event_dict():
+    return {
+        "version": "0",
+        "id": "6a7e8feb-b491-4cf7-a9f1-bf3703467718",
+        "detail-type": "EC2 Instance State-change Notification",
+        "source": "aws.ec2",
+        "account": "111122223333",
+        "time": "2017-12-22T18:43:48Z",
+        "region": "us-west-1",
+        "resources": [
+            "arn:aws:ec2:us-west-1:123456789012:instance/i-1234567890abcdef0"
+        ],
+        "detail": {
+            "instance_id": "i-1234567890abcdef0",
+            "state": "terminated"
+        },
+        "replay-name": "replay_archive"
     }
