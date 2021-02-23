@@ -1,3 +1,7 @@
+import base64
+import json
+from typing import Dict
+
 import boto3
 from boto3 import Session
 from botocore.credentials import RefreshableCredentials
@@ -24,6 +28,7 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
     core_session = get_session()
     core_session._credentials = refreshable_credentials
     return Session(botocore_session=core_session)
+
 
 # class AssumableSession:
 #     __sts = boto3.client('sts')
@@ -80,3 +85,29 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
 #         core_session = get_session()
 #         core_session._credentials = refreshable_credentials
 #         return Session(botocore_session=core_session)
+
+
+class LambdaInvoker:
+    def __init__(self, client: "LambdaClient" = None):
+        if not client:
+            self.__client__ = boto3.session.Session.client = boto3.client("lambda")
+        else:
+            self.__client__ = client
+
+    def invoke_sync(self, function_name: str, event: Dict, client_context: Dict) -> Dict:
+        res = self.__invoke__(function_name, event, client_context, "RequestResponse")
+        payload = json.loads(res["Payload"].read())
+        return payload
+
+    def __invoke__(self, function_name, event, client_context, invocation_type, **kwargs):
+        res = self.__client__.invoke(  # noqa
+            FunctionName=function_name,
+            ClientContext=str(base64.b64encode(json.dumps(client_context).encode("utf-8")), "utf-8"),
+            InvocationType=invocation_type,
+            Payload=json.dumps(event).encode(),
+            **kwargs
+        )
+        if res["ResponseMetadata"]["HTTPStatusCode"] != 200:
+            raise Exception(res)
+
+        return res
