@@ -86,7 +86,7 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
 #         core_session._credentials = refreshable_credentials
 #         return Session(botocore_session=core_session)
 
-
+# TODO: Add tests for LambdaInvoker
 class LambdaInvoker:
     def __init__(self, client: "LambdaClient" = None):
         if not client:
