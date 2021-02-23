@@ -90,7 +90,7 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
 class LambdaInvoker:
     def __init__(self, client: "LambdaClient" = None):
         if not client:
-            self.__client__ = boto3.session.Session.client = boto3.client("lambda")
+            self.__client__ = boto3.client("lambda")
         else:
             self.__client__ = client
 
