@@ -145,7 +145,7 @@ def test_responses(handler_class, expected_response, api_gw_event_dict_json_body
 
 @pytest.mark.parametrize("handler_class,expected_response", [
     (ErrorResponse, AwsApiGwHttpResponse(body={"timestamp": "2021-02-21T11:40:38.568+0000",
-                                               "errors": [{"type": "BaseLambdaError",
+                                               "errors": [{"type": "BaseFunctionError",
                                                            "message": "this is the error message"}]},
                                          status_code=409))
 ])
