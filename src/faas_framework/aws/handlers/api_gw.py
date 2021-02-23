@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, ValidationError
 
-from ...exceptions import BaseFunctionError, SerializationError
+from ...exceptions import BaseFunctionError, InternalServerError
 from ...handlers import BaseFunctionHandler
 from ...middlewares import BaseMiddleware
 from ...models import CamelCasedModel
@@ -66,7 +66,7 @@ class AwsApiGwHttpResponse(HttpResponse, CamelCasedModel):
             else:
                 _dict['body'] = json.dumps(self.body)
         except TypeError as e:
-            raise SerializationError(type(self.body).__name__)
+            raise InternalServerError(type(self.body).__name__)
 
         if self.headers is not None:
             _dict['multiValueHeaders'] = {k: list(v) for k, v in _dict.pop('headers').items()}
