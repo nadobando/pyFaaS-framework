@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from ..models.sns import SqsSnsNotificationModel
 from ..models.sqs import SqsModel, SqsRecordModel
-from ...exceptions import BaseLambdaError
+from ...exceptions import BaseFunctionError
 from ...handlers import BaseFunctionHandler
 from ...typing import Optional, List, Tuple
 
@@ -169,7 +169,7 @@ class SqsEventHandler(BaseFunctionHandler, abc.ABC, metaclass=SqsHandlerMetaClas
         else:
             raise NotImplementedError()
 
-    def handle_error(self, error: BaseLambdaError):
+    def handle_error(self, error: BaseFunctionError):
         if self.handle_as_batch:
             return {"statusCode": 200}
 
