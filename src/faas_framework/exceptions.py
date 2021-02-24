@@ -47,7 +47,7 @@ class ForbiddenError(BaseFunctionError):
 
 class ResourceNotFoundError(BaseFunctionError):
     status_code = 404
-    message = ""
+    message = "resource {resource} not found"
 
 
 class MethodNotAllowedError(BaseFunctionError):
