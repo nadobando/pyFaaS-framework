@@ -61,7 +61,8 @@ class BaseFunctionHandler(abc.ABC):
             response = self.handle_error(e)
             # raise e
         try:
-            deque(map(lambda x: x.on_response(response), self.middlewares))
+            if self.middlewares:
+                deque(map(lambda x: x.on_response(response), self.middlewares))
         except Exception as e:
             self.logger.exception("Exception thrown in response middleware")
 
