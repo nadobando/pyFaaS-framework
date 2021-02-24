@@ -11,7 +11,7 @@ class BaseFunctionError(Exception, abc.ABC):
         self.params = params
         self.status_code = status_code
         if message:
-            self.message = message
+            self.message = str(message)
 
     def __str__(self):
         parsed = {tup[1] for tup in string.Formatter().parse(self.message) if tup[1] is not None}
