@@ -33,7 +33,37 @@ The validations are based on [Pydantic] BaseModel and BaseSettings which you can
 
 
 
-### How To use ###
+## How To use 
+### Deployment Configuration
+#### Serverless Framework
+```yaml
+service: my-fist-faas-framework-service
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    slim: true
+    slimPatterns:
+      - "**/tests/**"
+    layer:
+      retain: false
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage,'test'}
+  environment:
+    POWERTOOLS_SERVICE_NAME: ${self:service}-${self:provider.stage} # this will be also part of the framework
+
+plugins:
+  - serverless-python-requirements # optional but recommended
+  
+functions:
+  myFirstFunction:
+    handler: faas_framework.app.handler
+    environment:
+      CLASS_HANDLER: "path.to.your.handler"
+```
 
 #### AWS
 ##### NativeHandler 
@@ -188,6 +218,7 @@ returns:
     'statusCode': 200
 }
 ```
+
 
 
 
