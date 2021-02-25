@@ -1,6 +1,6 @@
 # pyFaas-framework
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[![Build Status]()]() # TODO
 
 pyFaas-framework is a Cloud agnostic Function as a Service framework for Python. 
 Work is still in progress, but getting there :)
