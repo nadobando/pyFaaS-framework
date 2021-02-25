@@ -12,6 +12,9 @@ class EventBridgeModel(BaseModel):
     time: datetime
     region: str
     resources: List[str]
-    detail_type: str = Field(None, alias="detail-type")
+    detail_type: str
     detail: Dict[str, Any]
-    replay_name: Optional[str] = Field(None, alias="replay-name")
+    replay_name: Optional[str]
+
+    class Config:
+        alias_generator = lambda x: x.replace('_', '-')
