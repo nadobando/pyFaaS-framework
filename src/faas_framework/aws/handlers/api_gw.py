@@ -89,7 +89,6 @@ class HttpCorrelationIdMiddleware(BaseMiddleware):
 class LambdaApiGwProxyHandler(BaseFunctionHandler, abc.ABC):
     middlewares = (HttpCorrelationIdMiddleware(),)
     request_class = AwsApiGatewayHttpRequest
-    response_class = AwsApiGwHttpResponse
     body_class: BaseModel = None
     path_params_class: BaseModel = None
     query_string_class: BaseModel = None
