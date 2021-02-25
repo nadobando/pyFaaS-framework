@@ -26,9 +26,13 @@ class BaseFunctionHandler(abc.ABC):
         if callable(self.settings_class):
             self.settings = self.settings_class()
 
+    def __post_init__(self):
+        pass
+
     def __call__(self, request: Dict[str, Any], context: LambdaContext):
         self.raw_request = request
         self.context = context
+        self.__post_init__()
         response = self.__handle()
         return response
 
