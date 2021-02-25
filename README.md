@@ -4,13 +4,22 @@
 
 pyFaas-framework is a Cloud agnostic Function as a Service framework for Python. 
 Work is still in progress, but getting there :)
+# Installation
+Currently work is in progress so the insallation is from github
+## Github
+```sh
+pip install https://github.com/nadobando/pyFaaS-framework
+```
+```sh
+pipenv install https://github.com/nadobando/pyFaas-framework
+```
 # Current Supported Cloud Providers
   - AWS
 
 # Features 
   - Function Lifecycle
-  - Model Validation
-  - Handler Settings Validation
+  - Model Parsing and Validation
+  - Handler Settings Parsing and Validation
   - Error Handling
  
 ## Model Validation and Handler Settings Validation
@@ -20,19 +29,9 @@ The validations are based on [Pydantic] BaseModel and BaseSettings which you can
   - Native Lambda Handler 
   - AWS Lambda API Gateway Proxy Handler
   - SQS Event Handler including SNS Subscription
-  - EventBridge
+  - EventBridge Handler
 
 
-
-### Installation
-Currently work is in progress so the insallation is from github
-#### Github
-```sh
-pip install https://github.com/nadobando/pyFaaS-framework
-```
-```sh
-pipenv install https://github.com/nadobando/pyFaas-framework
-```
 
 ### How To use ###
 
