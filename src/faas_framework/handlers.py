@@ -13,9 +13,7 @@ logger: Logger = Logger()
 
 class BaseFunctionHandler(abc.ABC):
     request_class: BaseModel = None
-    # response_class: Union[BaseModel, Any] = None
     settings_class: BaseSettings = None
-    # default_middlewares: Tuple[BaseMiddleware] = ()
     middlewares: Tuple[BaseMiddleware] = ()
     logger = logger
 
@@ -57,18 +55,17 @@ class BaseFunctionHandler(abc.ABC):
                     i.on_request()
 
             self.__serialize_request__(self.raw_request, self.context)
+
             response = self.__process_handle__()
             response = self.__process_response__(response)
 
-        except Exception as e:
-            self.logger.exception("Exception thrown in handle")
-            response = self.handle_error(e)
-            # raise e
-        try:
             if self.middlewares:
                 deque(map(lambda x: x.on_response(response), self.middlewares))
+
         except Exception as e:
-            self.logger.exception("Exception thrown in response middleware")
+            self.logger.exception("Exception thrown")
+            response = self.handle_error(e)
+            # raise e
 
         return response() if callable(response) else response
 
@@ -87,6 +84,5 @@ class BaseFunctionHandler(abc.ABC):
     def handle_error(self, error: Exception):
         """
         general error handling
-        TODO: how to make it general for all lambda not only api-gw
         """
-        # return Response(status_code=500, error=Error(type=type(error).__name__, message="Internal Server Error"))()
+        pass
