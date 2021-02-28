@@ -1,22 +1,22 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
+import boto3
 from botocore.credentials import RefreshableCredentials
-from botocore.session import get_session
 from botocore.stub import Stubber
-from pytest_mock import MockerFixture
 
 from faas_framework.aws.utils import get_refreshable_aws_assumed_session
 
 
-def test_get_refreshable_aws_assumed_session(mocker: MockerFixture):
-    sts = get_session().create_client('sts')
+def test_get_refreshable_aws_assumed_session():
+    sts = boto3.client('sts')
+
     stubber = Stubber(sts)
     response = {
         'Credentials': {
-            'AccessKeyId': 'SOMEACCESSKEYFORTEST'[:16],
+            'AccessKeyId': 'SOMEACCESSKEYFOR',
             'SecretAccessKey': 'SOMESECRETACCESSKEY',
             'SessionToken': 'string',
-            'Expiration': datetime(2015, 1, 1)
+            'Expiration': datetime(2015, 1, 1, tzinfo=timezone.utc)
         },
         'AssumedRoleUser': {
             'AssumedRoleId': 'string',
@@ -30,10 +30,15 @@ def test_get_refreshable_aws_assumed_session(mocker: MockerFixture):
                            RoleSessionName="role-session-name",
                            ExternalId='external-id')
 
+    stubber.add_response('assume_role', response, expected_params)  # call with expired time
+    response["Credentials"]['Expiration'] = datetime.now(tz=timezone.utc) + timedelta(hours=2)  # call future expiration
     stubber.add_response('assume_role', response, expected_params)
     stubber.activate()
 
-    session = get_refreshable_aws_assumed_session(sts, RoleArn=role_arn,
-                                                  RoleSessionName="role-session-name",
-                                                  ExternalId="external-id")
-    assert type(session.get_credentials()) is RefreshableCredentials
+    session = get_refreshable_aws_assumed_session(sts, **expected_params)
+    credentials = session.get_credentials()
+    assert type(credentials) is RefreshableCredentials
+    assert credentials.access_key is response["Credentials"]["AccessKeyId"]
+    assert credentials.secret_key is response["Credentials"]["SecretAccessKey"]
+
+    stubber.deactivate()
