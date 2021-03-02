@@ -25,15 +25,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        echo "testing"
-#        python -m pip install --upgrade pip
-#        python -m pip install pipenv
-#        python -m pip install flake8 pytest
-#        echo "version $(python -V)"
-#        python -V
-#        python -m pipenv lock -rd > requirements.txt
+
+        python -m pip install --upgrade pip
+        python -m pip install pipenv
+        python -m pip install flake8 pytest
+        echo "version $(python -V)"
+        python -V
+        python -m pipenv lock -rd > requirements.txt
         
-#        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
