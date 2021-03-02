@@ -31,7 +31,7 @@ jobs:
         python -m pip install flake8 pytest
         echo "version $(python -V)"
         python -V
-        python -m pipenv lock -rd > requirements.txt
+        python -m pipenv --python python lock -rd > requirements.txt
         
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
