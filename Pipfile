@@ -8,6 +8,7 @@ pytest = '*'
 pytest-cov = '*'
 pytest-mock = '*'
 pytest-lazy-fixture = '*'
+flake8 = '*'
 
 
 [packages]
