@@ -7,7 +7,6 @@ from faas_framework.handlers import BaseFunctionHandler
 
 
 class MyTestHandler(BaseFunctionHandler):
-
     def __serialize_request__(self, request, context):
         pass
 
@@ -24,12 +23,12 @@ class MyTestHandler(BaseFunctionHandler):
         pass
 
 
-class NotBaseFunctionHandler():
+class NotBaseFunctionHandler:
     pass
 
 
 def test_no_class_handler_raises_exception():
-    with pytest.raises(Exception) as e:
+    with pytest.raises(Exception):
         importlib.import_module("faas_framework.app")
 
 

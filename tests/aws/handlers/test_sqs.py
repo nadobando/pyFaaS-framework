@@ -1,4 +1,4 @@
-from unittest.mock import call, MagicMock
+from unittest.mock import MagicMock, call
 
 import pytest
 from aws_lambda_powertools.utilities.batch.exceptions import SQSBatchProcessingError
@@ -11,15 +11,13 @@ from faas_framework.aws.models.sqs import SqsModel
 
 
 class MySqsEventSuccessHandler(SqsEventHandler):
-
     def handle(self, request: SqsModel, context: LambdaContext):
         pass
 
 
 class MySqsEventFailureHandler(SqsEventHandler):
-
     def handle(self, request: SqsModel, context: LambdaContext):
-        raise Exception('Test exception')
+        raise Exception("Test exception")
 
 
 class MyBatchSqsEventSuccessHandler(SqsEventHandler):
@@ -34,7 +32,7 @@ class MyBatchSqsEventFailureHandler(SqsEventHandler):
     handle_as_batch = True
 
     def handle_record(self, *args, **kwargs):
-        raise Exception('Test exception')
+        raise Exception("Test exception")
 
 
 class MySnsSqsEventSuccessHandler(SqsEventHandler):
@@ -49,15 +47,15 @@ class MySnsSqsEventFailureHandler(SqsEventHandler):
     sns_subscribed = True
 
     def handle_record(self, *args, **kwargs):
-        raise Exception('Test exception')
+        raise Exception("Test exception")
 
 
 class MySnsSqsEventBadRecordClassHandler(SqsEventHandler):
     sns_subscribed = True
-    records_class = create_model('NotSqsSnsNotificationModel')
+    records_class = create_model("NotSqsSnsNotificationModel")
 
     def handle_record(self, *args, **kwargs):
-        raise Exception('Test exception')
+        raise Exception("Test exception")
 
 
 class NotSqsModelHandler(SqsEventHandler):
@@ -69,10 +67,13 @@ class MySqsEventNotImplementedHandler(SqsEventHandler):
 
 
 # noinspection PyUnresolvedReferences
-@pytest.mark.parametrize('handler,event', [
-    (MySqsEventSuccessHandler, pytest.lazy_fixture('sqs_event_dict')),
-    (MySnsSqsEventSuccessHandler, pytest.lazy_fixture('sns_sqs_event_dict')),
-])
+@pytest.mark.parametrize(
+    "handler,event",
+    [
+        (MySqsEventSuccessHandler, pytest.lazy_fixture("sqs_event_dict")),
+        (MySnsSqsEventSuccessHandler, pytest.lazy_fixture("sns_sqs_event_dict")),
+    ],
+)
 def test_handle(handler, event, lambda_context):
     handler = handler()
     # noinspection PyTypeChecker
@@ -87,11 +88,11 @@ exception_calls = [
     (SQSBatchProcessingError, MyBatchSqsEventFailureHandler),
     (Exception, NotSqsModelHandler),
     (NotImplementedError, MySqsEventNotImplementedHandler),
-    (Exception, MySnsSqsEventBadRecordClassHandler)
+    (Exception, MySnsSqsEventBadRecordClassHandler),
 ]
 
 
-@pytest.mark.parametrize('exc,handler', exception_calls)
+@pytest.mark.parametrize("exc,handler", exception_calls)
 def test_handle_error(exc, handler, sqs_event_dict, lambda_context):
     try:
         handler()(sqs_event_dict, lambda_context)
@@ -100,7 +101,7 @@ def test_handle_error(exc, handler, sqs_event_dict, lambda_context):
 
 
 def test_handle_record(sqs_event_dict, lambda_context, mocker: MockerFixture):
-    mocker.patch.object(MyBatchSqsEventSuccessHandler, 'handle_record')
+    mocker.patch.object(MyBatchSqsEventSuccessHandler, "handle_record")
     handler = MyBatchSqsEventSuccessHandler()
     # noinspection PyTypeHints
     handler.handle_record: MagicMock

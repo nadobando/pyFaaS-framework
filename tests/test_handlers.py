@@ -34,7 +34,6 @@ class ErrorInFunctionHandler(BasicImplementationFunctionHandler):
 
 
 class MyMiddleware(BaseMiddleware):
-
     def on_request(self):
         self.handler.moto = "Go Serverless"
 
@@ -46,7 +45,7 @@ class MiddlewaredHandler(BasicImplementationFunctionHandler):
     middlewares = (MyMiddleware(),)
 
 
-os.environ['some_setting'] = "some value"
+os.environ["some_setting"] = "some value"
 basic_implementation_function_handler = BasicImplementationFunctionHandler()
 request_class_function_handler = RequestClassFunctionHandler()
 error_in_function_handler = ErrorInFunctionHandler()
@@ -54,12 +53,20 @@ middlewared_handler = MiddlewaredHandler()
 
 
 class TestBaseFunctionHandler:
-
-    @pytest.mark.parametrize("handler,req,expected", [
-        (basic_implementation_function_handler, {1, 2, 3}, {1, 2, 3}),
-        (request_class_function_handler, {"name": "lamb-frame"}, MyModel(name="lamb-frame"))
-    ])
-    def test_request_serialization(self, handler: BasicImplementationFunctionHandler, req, expected):
+    @pytest.mark.parametrize(
+        "handler,req,expected",
+        [
+            (basic_implementation_function_handler, {1, 2, 3}, {1, 2, 3}),
+            (
+                request_class_function_handler,
+                {"name": "lamb-frame"},
+                MyModel(name="lamb-frame"),
+            ),
+        ],
+    )
+    def test_request_serialization(
+        self, handler: BasicImplementationFunctionHandler, req, expected
+    ):
         handler.__serialize_request__(req, {})
         assert handler.request == expected, "unequal value"
         assert type(handler.request) == type(expected), "unequal type"
@@ -75,8 +82,10 @@ class TestBaseFunctionHandler:
     def test_middlewares(self, lambda_context):
         response = middlewared_handler({}, lambda_context)
         assert "moto" in response
-        assert response['moto'] == 'Go Serverless'
+        assert response["moto"] == "Go Serverless"
 
     def test_handler_settings(self):
         assert basic_implementation_function_handler.settings
-        assert basic_implementation_function_handler.settings.some_setting == "some value"
+        assert (
+            basic_implementation_function_handler.settings.some_setting == "some value"
+        )

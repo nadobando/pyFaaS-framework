@@ -8,7 +8,9 @@ from . import typing
 @dataclass
 class HttpRequest(abc.ABC):
     path: str
-    method: typing.Literal["HEAD", "GET", "POST", "PUT", "PATCH", "OPTIONS", "CONNECT", "TRACE", "DELETE"]
+    method: typing.Literal[
+        "HEAD", "GET", "POST", "PUT", "PATCH", "OPTIONS", "CONNECT", "TRACE", "DELETE"
+    ]
     headers: typing.Mapping[str, typing.List[str]] = None
     query_str: typing.Optional[typing.Mapping[str, typing.List[str]]] = None
     params: typing.Optional[typing.Mapping[str, str]] = None

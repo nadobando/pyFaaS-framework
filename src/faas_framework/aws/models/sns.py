@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from pydantic import HttpUrl, Field
+from pydantic import Field, HttpUrl
 
 from ...models import TitleCaseModel
-from ...typing import Optional, Literal, Dict, List, Union, DataT
+from ...typing import DataT, Dict, List, Literal, Optional, Union
 
 
 class SnsMsgAttributeModel(TitleCaseModel):
@@ -20,10 +20,10 @@ class BaseSnsModel(TitleCaseModel):
 
 
 class SnsSubscriptionConfirmationModel(BaseSnsModel):
-    subscribe_url: HttpUrl = Field(alias='SubscribeURL')
+    subscribe_url: HttpUrl = Field(alias="SubscribeURL")
     type: Literal["SubscriptionConfirmation"]
     token: str
-    signing_cert_url: HttpUrl = Field(alias='SigningCertURL')
+    signing_cert_url: HttpUrl = Field(alias="SigningCertURL")
     signature_version: str
     signature: str
 

@@ -6,7 +6,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from pydantic import BaseModel, BaseSettings
 
 from .middlewares import BaseMiddleware
-from .typing import Tuple, Dict, Any
+from .typing import Any, Dict, Tuple
 
 logger: Logger = Logger()
 

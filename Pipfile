@@ -9,6 +9,10 @@ pytest-cov = '*'
 pytest-mock = '*'
 pytest-lazy-fixture = '*'
 flake8 = '*'
+pre-commit = '*'
+xenon = "*"
+black = "==20.8b1"
+isort = '*'
 
 
 [packages]

@@ -8,9 +8,10 @@ from botocore.credentials import RefreshableCredentials
 from botocore.session import get_session
 
 
-# noinspection PyUnresolvedReferences
-def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
-    sts_client = sts or boto3.client('sts')
+def get_refreshable_aws_assumed_session(
+    sts: "STS" = None, **kwargs  # noqa: F821
+) -> Session:
+    sts_client = sts or boto3.client("sts")
 
     def refresh():
         """Refresh tokens by calling assume_role again """
@@ -24,7 +25,9 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
         return _credentials
 
     credentials = refresh()
-    refreshable_credentials = RefreshableCredentials.create_from_metadata(credentials, refresh, "sts-assume-role")
+    refreshable_credentials = RefreshableCredentials.create_from_metadata(
+        credentials, refresh, "sts-assume-role"
+    )
     core_session = get_session()
     core_session._credentials = refreshable_credentials
     return Session(botocore_session=core_session)
@@ -88,21 +91,27 @@ def get_refreshable_aws_assumed_session(sts: 'STS' = None, **kwargs) -> Session:
 
 # TODO: Add tests for LambdaInvoker
 class LambdaInvoker:
-    def __init__(self, client: "LambdaClient" = None):
+    def __init__(self, client: "LambdaClient" = None):  # noqa: F821
         if not client:
             self.__client__ = boto3.client("lambda")
         else:
             self.__client__ = client
 
-    def invoke_sync(self, function_name: str, event: Dict, client_context: Dict) -> Dict:
+    def invoke_sync(
+        self, function_name: str, event: Dict, client_context: Dict
+    ) -> Dict:
         res = self.__invoke__(function_name, event, client_context, "RequestResponse")
         payload = json.loads(res["Payload"].read())
         return payload
 
-    def __invoke__(self, function_name, event, client_context, invocation_type, **kwargs):
+    def __invoke__(
+        self, function_name, event, client_context, invocation_type, **kwargs
+    ):
         res = self.__client__.invoke(  # noqa
             FunctionName=function_name,
-            ClientContext=str(base64.b64encode(json.dumps(client_context).encode("utf-8")), "utf-8"),
+            ClientContext=str(
+                base64.b64encode(json.dumps(client_context).encode("utf-8")), "utf-8"
+            ),
             InvocationType=invocation_type,
             Payload=json.dumps(event).encode(),
             **kwargs
