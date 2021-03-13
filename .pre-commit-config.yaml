@@ -17,11 +17,11 @@ repos:
             entry: pipenv run black
             language: system
             types: [python]
-#          - id: isort
-#            name: formatting::isort
-#            entry: poetry run isort -rc
-#            language: system
-#            types: [python]
+          - id: isort
+            name: formatting::isort
+            entry: pipenv run isort -rc
+            language: system
+            types: [python]
     - repo: local
       hooks:
           - id: flake8
