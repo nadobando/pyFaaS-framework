@@ -5,7 +5,7 @@ target:
 	@$(MAKE) pr
 
 dev:
-	pip install --upgrade pip pipenv
+	pip install --upgrade pip pipenv pre-commit
 	pipenv install --python `which python` --dev --skip-lock
 	pre-commit install
 
