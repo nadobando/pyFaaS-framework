@@ -19,7 +19,7 @@ class TitleCaseConfig(pydantic.BaseConfig):
 
 
 class AliasedBaseModel(pydantic.BaseModel):
-    def dict(
+    def dict(  # noqa: A003
         self,
         *,
         include: typing.Union[

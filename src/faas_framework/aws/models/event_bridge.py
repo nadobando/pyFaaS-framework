@@ -10,7 +10,7 @@ def event_bridge_alias_generator(field: str) -> str:
 
 class EventBridgeModel(BaseModel):
     version: str
-    id: str
+    id: str  # noqa: VNE003
     source: str
     account: str
     time: datetime

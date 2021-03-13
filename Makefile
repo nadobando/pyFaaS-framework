@@ -11,8 +11,8 @@ dev:
 
 format:
 	#poetry run isort -rc aws_lambda_powertools tests
-	pipenv run isort -rc src tests
-	pipenv run black src tests
+	pipenv run isort -rc src/* tests/*
+	pipenv run black src/ tests/
 
 lint: format
 	pipenv run flake8 src/* tests/*

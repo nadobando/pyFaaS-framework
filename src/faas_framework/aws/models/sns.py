@@ -7,13 +7,13 @@ from ...typing import DataT, Dict, List, Literal, Optional, Union
 
 
 class SnsMsgAttributeModel(TitleCaseModel):
-    type: str
+    type: str  # noqa: VNE003
     value: str
 
 
 class BaseSnsModel(TitleCaseModel):
     topic_arn: str
-    type: Literal["Notification", "SubscriptionConfirmation"]
+    type: Literal["Notification", "SubscriptionConfirmation"]  # noqa: VNE003
     message: Union[str, DataT]
     message_id: str
     timestamp: datetime
@@ -21,7 +21,7 @@ class BaseSnsModel(TitleCaseModel):
 
 class SnsSubscriptionConfirmationModel(BaseSnsModel):
     subscribe_url: HttpUrl = Field(alias="SubscribeURL")
-    type: Literal["SubscriptionConfirmation"]
+    type: Literal["SubscriptionConfirmation"]  # noqa: VNE003
     token: str
     signing_cert_url: HttpUrl = Field(alias="SigningCertURL")
     signature_version: str
@@ -31,7 +31,7 @@ class SnsSubscriptionConfirmationModel(BaseSnsModel):
 class BaseSnsNotificationModel(BaseSnsModel):
     subject: Optional[str]
     unsubscribe_url: HttpUrl
-    type: Literal["Notification"]
+    type: Literal["Notification"]  # noqa: VNE003
     message_attributes: Optional[Dict[str, SnsMsgAttributeModel]]
 
 

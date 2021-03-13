@@ -41,7 +41,7 @@ def test_base_all_params_set():
 
     assert (
         str(y.value)
-        == "MyTestFunctionErrorWithoutParams missing 1 required keyword-only argument: {'name'}"
+        == "MyTestFunctionErrorWithoutParams missing 1 required keyword-only argument: {'name'}"  # noqa: W503
     )
 
 

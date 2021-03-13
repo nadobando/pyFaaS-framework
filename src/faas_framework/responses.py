@@ -11,7 +11,7 @@ from .utils.collections import CaseInsensitiveDict
 
 
 class Error(BaseModel):
-    type: str
+    type: str  # noqa: VNE003
     message: typing.Union[str, typing.List[str]]
 
 
