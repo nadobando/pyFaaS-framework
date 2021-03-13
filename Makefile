@@ -6,7 +6,7 @@ target:
 
 dev:
 	pip install --upgrade pip pipenv
-	pipenv install --dev --skip-lock
+	pipenv install --python `which python` --dev --skip-lock
 	pre-commit install
 
 format:
