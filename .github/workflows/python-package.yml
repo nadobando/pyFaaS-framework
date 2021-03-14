@@ -28,6 +28,8 @@ jobs:
         run: make dev
       - name: Formatting and Linting
         run: make lint
+      - name: install faas-framework
+        run: pip install -e .
       - name: Test with pytest
         run: make test
       - name: Security baseline
