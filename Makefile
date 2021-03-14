@@ -67,14 +67,11 @@ complexity-baseline:
 #
 # Use `poetry version <major>/<minor></patch>` for version bump
 #
-#release-prod:
-	#poetry config pypi-token.pypi ${PYPI_TOKEN}
-	#poetry publish -n
+release-prod:
+	pipenv run twine upload --repository pypi dist/*
 
-#release-test:
-	#poetry config repositories.testpypi https://test.pypi.org/legacy
-	#poetry config pypi-token.pypi ${PYPI_TEST_TOKEN}
-	#poetry publish --repository testpypi -n
+release-test:
+	pipenv run twine upload --repository testpypi dist/*
 
 #release: pr
 	#poetry build

@@ -2,10 +2,14 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 name: Build
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches:
+      - develop
+      - master
+  push:
+    branches:
+      - develop
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,11 +36,11 @@ jobs:
         run: make security-baseline
       - name: Complexity baseline
         run: make complexity-baseline
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v1
-#        with:
-#          file: ./coverage.xml
-#           flags: unittests
-#          env_vars: OS,PYTHON
-#          name: pyFaaS-framework-codecov
-#          fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: pyFaaS-framework
+          fail_ci_if_error: true
