@@ -1,7 +1,8 @@
 # pyFaaS-framework
 
-[![codecov](https://codecov.io/gh/nadobando/pyFaaS-framework/branch/master/graph/badge.svg?token=8QZ00BRLFU)](https://codecov.io/gh/nadobando/pyFaaS-framework)
 [![Build](https://github.com/nadobando/pyFaaS-framework/actions/workflows/build.yml/badge.svg)](https://github.com/nadobando/pyFaaS-framework/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/nadobando/pyFaaS-framework/branch/master/graph/badge.svg?token=8QZ00BRLFU)](https://codecov.io/gh/nadobando/pyFaaS-framework)
+
 
 pyFaaS-framework is a Cloud agnostic Function as a Service framework for Python.
 Work is still in progress, but getting there :)
