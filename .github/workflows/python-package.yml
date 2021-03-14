@@ -31,7 +31,7 @@ jobs:
       - name: install faas-framework
         run: AWS_DEFAULT_REGION=us-east-1 pipenv run pip install -e .
       - name: Test with pytest
-        run: make test
+        run: AWS_DEFAULT_REGION=us-east-1 make test
       - name: Security baseline
         run: make security-baseline
       - name: Complexity baseline
