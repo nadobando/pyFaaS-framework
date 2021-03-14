@@ -20,7 +20,7 @@ lint: format
 test:
 	PYTHONPATH=./src:./tests \
 	AWS_DEFAULT_REGION=us-east-1 \
-	pipenv run pytest -vvv --cov=./ --cov-report=xml
+	pipenv run pytest -vvv --cov=./src --cov-report=xml
 
 coverage-html:
 	pipenv run pytest --cov-report html
@@ -60,9 +60,9 @@ security-baseline:
 
 complexity-baseline:
 	$(info Maintenability index)
-	poetry run radon mi src
+	pipenv run radon mi src
 	$(info Cyclomatic complexity index)
-	poetry run xenon --max-absolute C --max-modules A --max-average A src
+	pipenv run xenon --max-absolute C --max-modules A --max-average A src
 
 #
 # Use `poetry version <major>/<minor></patch>` for version bump
