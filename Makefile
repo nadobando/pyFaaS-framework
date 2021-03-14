@@ -18,6 +18,8 @@ lint: format
 	pipenv run flake8 src/* tests/*
 
 test:
+	PYTHONPATH=./src:./tests \
+	AWS_DEFAULT_REGION=us-east-1 \
 	pipenv run pytest -vvv --cov=./ --cov-report=xml
 
 coverage-html:
