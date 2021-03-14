@@ -221,7 +221,6 @@ returns:
 
 
 ### Todos
-  - Create Pypi Repository
  - Add more Cloud Providers
 
 License
