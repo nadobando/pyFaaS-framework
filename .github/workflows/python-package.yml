@@ -34,11 +34,11 @@ jobs:
         run: make security-baseline
       - name: Complexity baseline
         run: make complexity-baseline
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v1
-#        with:
-#          file: ./coverage.xml
-#           flags: unittests
-#          env_vars: OS,PYTHON
-#          name: pyFaaS-framework-codecov
-#          fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: pyFaaS-framework-codecov
+          fail_ci_if_error: true
