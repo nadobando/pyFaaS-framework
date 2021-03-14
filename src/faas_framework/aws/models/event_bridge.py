@@ -1,12 +1,16 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
+
+def event_bridge_alias_generator(field: str) -> str:
+    return field.replace("_", "-")
 
 
 class EventBridgeModel(BaseModel):
     version: str
-    id: str
+    id: str  # noqa: VNE003
     source: str
     account: str
     time: datetime
@@ -17,4 +21,4 @@ class EventBridgeModel(BaseModel):
     replay_name: Optional[str]
 
     class Config:
-        alias_generator = lambda x: x.replace('_', '-')
+        alias_generator = event_bridge_alias_generator

@@ -2,9 +2,9 @@ from datetime import datetime
 
 from pydantic import Field
 
-from ...models import TitleCaseModel, CamelCasedModel
+from ...models import CamelCasedModel, TitleCaseModel
 from ...responses import DataT
-from ...typing import Literal, Dict, List, Optional, Union
+from ...typing import Dict, List, Literal, Optional, Union
 
 
 class SqsAttributesModel(TitleCaseModel):

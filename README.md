@@ -1,39 +1,39 @@
-# pyFaas-framework
+# pyFaaS-framework
 
 [![Build Status]()]() # TODO
 
-pyFaas-framework is a Cloud agnostic Function as a Service framework for Python. 
+pyFaaS-framework is a Cloud agnostic Function as a Service framework for Python.
 Work is still in progress, but getting there :)
 # Installation
-Currently work is in progress so the insallation is from github
+Currently work is in progress so the installation is from github
 ## Github
 ```sh
 pip install https://github.com/nadobando/pyFaaS-framework
 ```
 ```sh
-pipenv install https://github.com/nadobando/pyFaas-framework
+pipenv install https://github.com/nadobando/pyFaaS-framework
 ```
 # Current Supported Cloud Providers
   - AWS
 
-# Features 
+# Features
   - Function Lifecycle
   - Model Parsing and Validation
   - Handler Settings Parsing and Validation
   - Error Handling
- 
+
 ## Model Validation and Handler Settings Validation
-The validations are based on [Pydantic] BaseModel and BaseSettings which you can define to meet your needs  
+The validations are based on [Pydantic] AliasedBaseModel and BaseSettings which you can define to meet your needs
 
 # AWS Features
-  - Native Lambda Handler 
+  - Native Lambda Handler
   - AWS Lambda API Gateway Proxy Handler
   - SQS Event Handler including SNS Subscription
   - EventBridge Handler
 
 
 
-## How To use 
+## How To use
 ### Deployment Configuration
 #### Serverless Framework
 ```yaml
@@ -57,7 +57,7 @@ provider:
 
 plugins:
   - serverless-python-requirements # optional but recommended
-  
+
 functions:
   myFirstFunction:
     handler: faas_framework.app.handler
@@ -66,23 +66,23 @@ functions:
 ```
 
 #### AWS
-##### NativeHandler 
+##### NativeHandler
 
 ```python
-from pydantic import BaseModel, validator, BaseSettings
+from pydantic import AliasedBaseModel, validator, BaseSettings
 from faas_framework.aws.handlers.native import NativeHandler
 
 class HelloWorldSettings(BaseSettings):
     greeter: str
 
-class HelloWorldNativeRequestModel(BaseModel):
+class HelloWorldNativeRequestModel(AliasedBaseModel):
     name: str
 
     @validator('name', pre=True)
     def convert_to_title(cls, value: str):
         return value.title()
 
-class HelloWorldResponse(BaseModel):
+class HelloWorldResponse(AliasedBaseModel):
     message: str
 
 class HelloWorldHandler(NativeHandler):
@@ -93,10 +93,10 @@ class HelloWorldHandler(NativeHandler):
         return HelloWorldResponse(message=f"{self.settings.greeter} says hello to {request.name}")
 ```
 
-##### LambdaApiGwProxyHandler 
+##### LambdaApiGwProxyHandler
 ```python
 from aws_lambda_powertools.utilities.typing import LambdaContext # will be part of the framework
-from pydantic import BaseModel, validator, BaseSettings
+from pydantic import AliasedBaseModel, validator, BaseSettings
 
 from faas_framework.aws.handlers.api_gw import LambdaApiGwProxyHandler
 
@@ -106,7 +106,7 @@ class HelloWorldSettings(BaseSettings):
     greeter: str
 
 
-class HelloWorldNativeRequestModel(BaseModel):
+class HelloWorldNativeRequestModel(AliasedBaseModel):
     name: str
 
     @validator('name', pre=True)
@@ -114,7 +114,7 @@ class HelloWorldNativeRequestModel(BaseModel):
         return value.title()
 
 
-class HelloWorldResponse(BaseModel):
+class HelloWorldResponse(AliasedBaseModel):
     message: str
 
 
@@ -200,7 +200,7 @@ event = {
     },
     "pathParameters": {'param': 'test-param'},
     "stageVariables": None,
-    "body": '{"name": "pyFaas-framework"}',
+    "body": '{"name": "pyFaaS-framework"}',
     "isBase64Encoded": False
 }
 handler(event, LambdaContext())
@@ -210,7 +210,7 @@ handler(event, LambdaContext())
 returns:
 ```python
 {
-    'body': '{"message": "me says hello to Pyfaas-Framework"}',
+    'body': '{"message": "me says hello to pyFaaS-framework"}',
     'isBase64Encoded': False,
     'multiValueHeaders': {
             'X-Correlation-Id': ['82348ccf-ddac-4f73-b61e-a960a8d2369b']

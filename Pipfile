@@ -4,10 +4,30 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = '*'
-pytest-cov = '*'
-pytest-mock = '*'
+coverage = {extras = ["toml"], version = "~=5.0.3"}
+black = "==20.8b1"
+pytest = "*"
 pytest-lazy-fixture = '*'
+pytest-cov = "~=2.8.1"
+pytest-mock = "*"
+pytest-asyncio = "~=0.12.0"
+flake8 = "*"
+#flake8-black = "~=0.1.1"
+#flake8-builtins = "~=1.4.2"
+#flake8-comprehensions = "~=3.2.2"
+#flake8-debugger = "~=3.2.1"
+#flake8-fixme = "~=1.1.1"
+#flake8-isort = "*"
+#flake8-variables-names = "~=0.0.3"
+#flake8-eradicate = "~=0.3.0"
+#flake8-bugbear = "~=20.1.4"
+isort = "~=4.3.21"
+pdoc3 = "~=0.7.5"
+bandit = "~=1.6.2"
+radon = "*"
+xenon = "~=0.7.0"
+mkdocs-material = "~=6.2.7"
+mkdocs-git-revision-date-plugin = "~=0.3.1"
 
 
 [packages]

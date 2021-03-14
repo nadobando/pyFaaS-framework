@@ -2,21 +2,19 @@ import pytest
 
 from faas_framework.utils.collections import CaseInsensitiveDict
 
-case_insensitive_dict = CaseInsensitiveDict(**{
-    "hello": 'world',
-    "WoRlD": "hello"
-})
+case_insensitive_dict = CaseInsensitiveDict(**{"hello": "world", "WoRlD": "hello"})
 
 
 class TestCaseInsensitiveDict:
-
-    @pytest.mark.parametrize("key,value", [
-        ('hello', 'world'),
-        ('HeLlO', 'world'),
-        ('world', 'hello'),
-        ('wORld', 'hello')
-
-    ])
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("hello", "world"),
+            ("HeLlO", "world"),
+            ("world", "hello"),
+            ("wORld", "hello"),
+        ],
+    )
     def test_get(self, key, value):
         assert case_insensitive_dict.get(key) == value
 
@@ -35,10 +33,7 @@ class TestCaseInsensitiveDict:
             assert v in values
 
     def test_eq(self):
-        d = {
-            "HellO": 'world',
-            "wOrLd": "hello"
-        }
+        d = {"HellO": "world", "wOrLd": "hello"}
         assert d == case_insensitive_dict
 
     def test_not_eq(self):
@@ -47,7 +42,9 @@ class TestCaseInsensitiveDict:
         assert case_insensitive_dict != _copy
 
     def test_not_comparable(self):
-        assert NotImplemented == case_insensitive_dict.__eq__("{'hello': 'world', 'WoRlD': 'hello'}")
+        assert NotImplemented == case_insensitive_dict.__eq__(
+            "{'hello': 'world', 'WoRlD': 'hello'}"
+        )
 
     def test_copy(self):
         assert case_insensitive_dict.copy() == case_insensitive_dict

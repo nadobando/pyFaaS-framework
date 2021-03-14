@@ -16,7 +16,11 @@ class BaseFunctionError(Exception, abc.ABC):
             self.message = self.message or ""
 
     def __str__(self):
-        parsed = {tup[1] for tup in string.Formatter().parse(self.message) if tup[1] is not None}
+        parsed = {
+            tup[1]
+            for tup in string.Formatter().parse(self.message)
+            if tup[1] is not None
+        }
         has_params = len(parsed) > 0
         _parsed = parsed.copy()
         for param in parsed:
@@ -25,7 +29,8 @@ class BaseFunctionError(Exception, abc.ABC):
         len_parsed = len(_parsed)
         if len_parsed != 0:
             raise TypeError(
-                f"{self.__class__.__name__} missing {len_parsed} required keyword-only argument: {_parsed}")
+                f"{self.__class__.__name__} missing {len_parsed} required keyword-only argument: {_parsed}"
+            )
         if has_params:
             return self.message.format(**self.params)
         else:

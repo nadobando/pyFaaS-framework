@@ -2,13 +2,12 @@ import abc
 
 from faas_framework.aws.handlers.native import NativeHandler
 from faas_framework.aws.models.event_bridge import EventBridgeModel
-# from faas_framework.handlers import BaseFunctionHandler
-from faas_framework.models.config import BaseModel
+from faas_framework.models.config import AliasedBaseModel
 
 
 class EventBridgeHandler(NativeHandler, abc.ABC):
     request_class = EventBridgeModel
-    detail_class: BaseModel = None
+    detail_class: AliasedBaseModel = None
 
     def __serialize_request__(self, request, context):
         if not issubclass(self.request_class, EventBridgeModel):

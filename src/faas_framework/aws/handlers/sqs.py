@@ -10,18 +10,21 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from botocore.config import Config
 from pydantic import BaseModel
 
-from ..models.sns import SqsSnsNotificationModel
-from ..models.sqs import SqsModel, SqsRecordModel
 from ...exceptions import BaseFunctionError
 from ...handlers import BaseFunctionHandler
-from ...typing import Optional, List, Tuple
+from ...typing import List, Optional, Tuple
+from ..models.sns import SqsSnsNotificationModel
+from ..models.sqs import SqsModel, SqsRecordModel
 
 logger = logging.getLogger(__name__)
 
 
 class BatchSQSProcessor(BasePartialProcessor):
-
-    def __init__(self, config: Optional[Config] = None, suppress_exception: bool = False, ):
+    def __init__(
+        self,
+        config: Optional[Config] = None,
+        suppress_exception: bool = False,
+    ):
         """
         Initializes sqs client.
         """
@@ -48,7 +51,10 @@ class BatchSQSProcessor(BasePartialProcessor):
         """
         Format messages to use in batch deletion
         """
-        return [{"Id": msg["messageId"], "ReceiptHandle": msg["receiptHandle"]} for msg in self.success_messages]
+        return [
+            {"Id": msg["messageId"], "ReceiptHandle": msg["receiptHandle"]}
+            for msg in self.success_messages
+        ]
 
     def _process_record(self, record) -> Tuple:
         """
@@ -78,7 +84,9 @@ class BatchSQSProcessor(BasePartialProcessor):
         # If all messages were successful, fall back to the default SQS -
         # Lambda behaviour which deletes messages if Lambda responds successfully
         if not self.fail_messages:
-            logger.debug(f"All {len(self.success_messages)} records successfully processed")
+            logger.debug(
+                f"All {len(self.success_messages)} records successfully processed"
+            )
             return
 
         queue_url = self._get_queue_url()
@@ -86,15 +94,21 @@ class BatchSQSProcessor(BasePartialProcessor):
 
         delete_message_response = None
         if entries_to_remove:
-            delete_message_response = self.client.delete_message_batch(QueueUrl=queue_url, Entries=entries_to_remove)
+            delete_message_response = self.client.delete_message_batch(
+                QueueUrl=queue_url, Entries=entries_to_remove
+            )
 
         if self.suppress_exception:
-            logger.debug(f"{len(self.fail_messages)} records failed processing, but exceptions are suppressed")
+            logger.debug(
+                f"{len(self.fail_messages)} records failed processing, but exceptions are suppressed"
+            )
         else:
-            logger.debug(f"{len(self.fail_messages)} records failed processing, raising exception")
+            logger.debug(
+                f"{len(self.fail_messages)} records failed processing, raising exception"
+            )
             raise SQSBatchProcessingError(
                 msg=f"Not all records processed succesfully. {len(self.exceptions)} individual errors logged "
-                    f"separately below.",
+                f"separately below.",
                 child_exceptions=self.exceptions,
             )
 
@@ -104,8 +118,10 @@ class BatchSQSProcessor(BasePartialProcessor):
 class SqsHandlerMetaClass(abc.ABCMeta):
     def __new__(cls, name, bases, namespace, **kwargs):
         if name != "SqsEventHandler":
-            if namespace.get('handle_as_batch') and not namespace.get("handle_record"):
-                raise NotImplementedError(f'{name} must implement handle_record(record) if handle_as_batch is True')
+            if namespace.get("handle_as_batch") and not namespace.get("handle_record"):
+                raise NotImplementedError(
+                    f"{name} must implement handle_record(record) if handle_as_batch is True"
+                )
 
         new_cls = super().__new__(cls, name, bases, namespace, **kwargs)
         return new_cls
@@ -146,12 +162,19 @@ class SqsEventHandler(BaseFunctionHandler, abc.ABC, metaclass=SqsHandlerMetaClas
         self.records: List[record_class.__class__]
 
         if self.sns_subscribed:
-            if self.records_class is not None and not issubclass(self.records_class, SqsSnsNotificationModel):
-                raise Exception(f"records_class must be subclass of {SqsSnsNotificationModel.__name__}")
+            if self.records_class is not None and not issubclass(
+                self.records_class, SqsSnsNotificationModel
+            ):
+                raise Exception(
+                    f"records_class must be subclass of {SqsSnsNotificationModel.__name__}"
+                )
             elif self.records_class is None:
                 self.records_class = SqsSnsNotificationModel
 
-            self.records = [self.__sns_record_serializer__(record) for record in self.request.records]
+            self.records = [
+                self.__sns_record_serializer__(record)
+                for record in self.request.records
+            ]
 
         if self.records_class:
             for i in self.records:

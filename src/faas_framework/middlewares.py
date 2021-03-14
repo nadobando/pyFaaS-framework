@@ -1,8 +1,10 @@
 import abc
 
+# from .handlers import BaseFunctionHandler
+
 
 class BaseMiddleware(abc.ABC):
-    handler: 'BaseFunctionHandler'
+    handler: "BaseFunctionHandler"  # noqa: F821
 
     @abc.abstractmethod
     def on_request(self):
