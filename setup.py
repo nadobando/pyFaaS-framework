@@ -1,5 +1,3 @@
-import re
-
 from setuptools import setup
 
 # with open("src/faas_framework/__init__.py", encoding="utf8") as f:
@@ -8,21 +6,19 @@ from setuptools import setup
 # Metadata goes in setup.cfg. These are here for GitHub's dependency graph.
 setup(
     name="pyfaas-framework",
-    version="1.0.0",
+    version="1.0.1",
     install_requires=[
         "pydantic",
         "pydantic[email]",
         "typing-extensions; python_version < '3.8'",
-        "aws-lambda-powertools"
+        "aws-lambda-powertools",
     ],
-    
     extras_require={
         "dev": [
             "pytest",
-            'pytest-cov',
-            'pytest-mock'
-            'pytest-lazy-fixture'
-
+            "pytest-cov",
+            "pytest-mock",
+            "pytest-lazy-fixture"
             # "tox",
             # "sphinx",
             # "pallets-sphinx-themes",

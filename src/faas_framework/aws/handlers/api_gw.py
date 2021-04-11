@@ -2,7 +2,7 @@ import abc
 import base64
 import json
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from pydantic import BaseModel, ValidationError
 
@@ -18,6 +18,8 @@ from ...utils.collections import CaseInsensitiveDict
 
 @dataclass
 class AwsApiGatewayHttpRequest(HttpRequest):
+    request_context: dict = field(default_factory=dict)
+
     @classmethod
     def __handle_body__(cls, body, is_base_64, headers: CaseInsensitiveDict):
         _body = body if not is_base_64 else base64.b64decode(body)
@@ -40,6 +42,7 @@ class AwsApiGatewayHttpRequest(HttpRequest):
         query_str = {x: y[0] for x, y in qs_params.items() if len(y) == 1}
         qs_params.update(query_str)
         path_params = request["pathParameters"]
+        request_context = request["requestContext"]
         headers = CaseInsensitiveDict(**headers) if headers else {}
         body = cls.__handle_body__(request["body"], request["isBase64Encoded"], headers)
         _request = dict(
@@ -49,6 +52,7 @@ class AwsApiGatewayHttpRequest(HttpRequest):
             params=path_params if path_params else {},
             body=body,
             method=request["httpMethod"],
+            request_context=request_context,
         )
         return cls(**_request)
 
