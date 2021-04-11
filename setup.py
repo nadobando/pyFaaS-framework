@@ -17,7 +17,8 @@ setup(
         "dev": [
             "pytest",
             "pytest-cov",
-            "pytest-mock" "pytest-lazy-fixture"
+            "pytest-mock",
+            "pytest-lazy-fixture"
             # "tox",
             # "sphinx",
             # "pallets-sphinx-themes",
