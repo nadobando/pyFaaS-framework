@@ -37,15 +37,6 @@ The validations are based on [Pydantic] BaseModel and BaseSettings which you can
 ```yaml
 service: my-fist-faas-framework-service
 
-custom:
-  pythonRequirements:
-    dockerizePip: non-linux
-    slim: true
-    slimPatterns:
-      - "**/tests/**"
-    layer:
-      retain: false
-
 provider:
   name: aws
   runtime: python3.8
