@@ -67,10 +67,15 @@ complexity-baseline:
 #
 # Use `poetry version <major>/<minor></patch>` for version bump
 #
+
+build:
+	python -m build --sdist --wheel .
+
+
 release-prod:
 	pipenv run twine upload --repository pypi dist/*
 
-release-test:
+release-test: build
 	pipenv run twine upload --repository testpypi dist/*
 
 #release: pr

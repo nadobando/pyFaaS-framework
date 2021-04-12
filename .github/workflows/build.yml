@@ -4,11 +4,11 @@ name: Build
 on:
   pull_request:
     branches:
-      - develop
+      - dev
       - master
   push:
     branches:
-      - develop
+      - dev
       - master
 jobs:
   build:
