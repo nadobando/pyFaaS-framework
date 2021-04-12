@@ -6,7 +6,7 @@ from setuptools import setup
 # Metadata goes in setup.cfg. These are here for GitHub's dependency graph.
 setup(
     name="pyfaas-framework",
-    version="1.0.1",
+    version="1.0.4",
     install_requires=[
         "pydantic",
         "pydantic[email]",

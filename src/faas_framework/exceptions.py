@@ -9,7 +9,8 @@ class BaseFunctionError(Exception, abc.ABC):
     def __init__(self, message: str = None, *, status_code: int = None, **params):
         super(BaseFunctionError, self).__init__(message)
         self.params = params
-        self.status_code = status_code
+        if status_code:
+            self.status_code = status_code
         if message:
             self.message = str(message)
         else:

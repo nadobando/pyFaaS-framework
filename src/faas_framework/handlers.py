@@ -59,13 +59,13 @@ class BaseFunctionHandler(abc.ABC):
             response = self.__process_handle__()
             response = self.__process_response__(response)
 
-            if self.middlewares:
-                deque(map(lambda x: x.on_response(response), self.middlewares))
-
         except Exception as e:
             self.logger.exception("Exception thrown")
             response = self.handle_error(e)
             # raise e
+        finally:
+            if self.middlewares:
+                deque(map(lambda x: x.on_response(response), self.middlewares))
 
         return response() if callable(response) else response
 
